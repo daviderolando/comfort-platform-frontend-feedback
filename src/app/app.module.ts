@@ -17,16 +17,8 @@ import { SignupComponent } from './signup/signup.component';
 import { SignupSubmitComponent } from './signup/signup-submit/signup-submit.component';
 import { TermsComponent } from './terms/terms.component';
 import { SignupSuccessComponent } from './signup/signup-success/signup-success.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-
-/* Add Amplify imports */
-// import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
-// import Amplify from 'aws-amplify';
-// import awsconfig from '../aws-exports';
-
-/* Configure Amplify resources */
-// Amplify.configure(awsconfig);
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -43,7 +35,6 @@ import { environment } from '../environments/environment';
     SignupSuccessComponent,
   ],
   imports: [
-    // AmplifyUIAngularModule,
     BrowserModule,
     FormsModule,
     AppRoutingModule,

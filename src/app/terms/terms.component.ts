@@ -14,11 +14,7 @@ export class TermsComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.termsSub = this.dataService
-      .getTermsAndConditions()
-      .subscribe((resHtml) => {
-        this.termsHtml = resHtml;
-      });
+    this.termsHtml = '<p>Not implemented yet. Terms will be loaded from the FastAPI backend later.</p>';
   }
 
   ngOnDestroy() {

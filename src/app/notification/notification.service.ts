@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../environments/environment';
@@ -19,6 +19,11 @@ export class NotificationService {
   constructor(private authService: AuthService, private http: HttpClient) {}
 
   getUserNotifications() {
+    this.arrNotifications = [];
+    this.notificationChanged.next([]);
+    return of({
+      notifications: [],
+    });
 
     // if (!this.authService.isLoggedIn()){
     //   return false;
@@ -39,6 +44,11 @@ export class NotificationService {
   }
 
   delUserNotification(idx: number, hash: string){
+    window.alert('Not implemented yet. Notification updates will be connected to the FastAPI backend later.');
+    return of({
+      status: false,
+    });
+
     // this.arrNotifications.splice(idx,1);
     this.arrNotifications = this.arrNotifications.filter(el => {
       return el.hash != hash;

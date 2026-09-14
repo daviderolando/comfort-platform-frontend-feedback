@@ -1,6 +1,6 @@
 import { tap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import { environment } from './../../environments/environment';
@@ -25,15 +25,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getCurrentWeather() {
-    return this.http
-      .get<any>(this.weatherApiUrl + '/current')
-      .pipe(
-        tap((data) => {
-          // console.log('Current weather:');
-          // console.log(data);
-          // this.weatherDataChanged.next(data);
-        })
-      );
+    return of({});
   }
 
   // TODO: restructure all the calls to go to update procedure
@@ -54,6 +46,14 @@ export class DataService {
   // subscribe(result => console.log(result));
 
   getLastDayWeatherDirect() {
+    return of({
+      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      temp: [0, 0, 0, 0, 0, 0],
+      minT: 0,
+      maxT: 10,
+      location: 'Not implemented yet',
+    });
+
     // return this.http.post<any>(this.weatherApiUrl + '/last-day', {"city": "stockholm"}).pipe(
     const url = `${this.weatherApiUrl}/last-day-direct`;
 
@@ -150,6 +150,14 @@ export class DataService {
   }
 
   getLastDayWeather(refresh: boolean = false) {
+    return of({
+      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      temp: [0, 0, 0, 0, 0, 0],
+      minT: 0,
+      maxT: 10,
+      location: 'Not implemented yet',
+    });
+
     // return this.http.post<any>(this.weatherApiUrl + '/last-day', {"city": "stockholm"}).pipe(
     let direct = refresh ? '-direct': '';
 
@@ -261,6 +269,15 @@ export class DataService {
   }
 
   getForecastWeatherDirect() {
+    return of({
+      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      temp: [0, 0, 0, 0, 0, 0],
+      minT: 0,
+      maxT: 10,
+      icons: [],
+      location: 'Not implemented yet',
+    });
+
     // return this.http.post<any>(this.weatherApiUrl + '/last-day', {"city": "stockholm"}).pipe(
     const url = `${this.weatherApiUrl}/forecast-direct`;
     const body = {
@@ -381,6 +398,15 @@ export class DataService {
   }
 
   getForecastWeather() {
+    return of({
+      labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+      temp: [0, 0, 0, 0, 0, 0],
+      minT: 0,
+      maxT: 10,
+      icons: [],
+      location: 'Not implemented yet',
+    });
+
     // return this.http.post<any>(this.weatherApiUrl + '/last-day', {"city": "stockholm"}).pipe(
     return this.http.get<any>(this.weatherApiUrl + '/forecast').pipe(
       tap((data) => {
@@ -543,13 +569,6 @@ export class DataService {
    * Get terms and conditions html from server
    */
   getTermsAndConditions() {
-    return this.http
-      .get<any>(this.termsApiUrl, { responseType: 'text' as 'json' })
-      .pipe(
-        tap((resHtml) => {
-          // console.log('Terms and Condition (Tap)');
-          // console.log(resHtml);
-        })
-      );
+    return of('<p>Not implemented yet. Terms will be loaded from the FastAPI backend later.</p>');
   }
 }

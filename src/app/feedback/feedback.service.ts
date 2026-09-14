@@ -37,17 +37,14 @@ export class FeedbackService {
    * @param addFeedbackPost
    */
   sendFeedback(addFeedbackPost: FeedbackRequestData) {
-
-    return this.http
-      // .post<any>(this.addApiUrl, addFeedbackPost, httpOptions)
-      .post<FeedbackResponseAdd>(this.addApiUrl, addFeedbackPost)
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          // Do something with the response
-          // console.log(resData);
-          console.log("🚀 ~ file: feedback.service.ts ~ line 48 ~ FeedbackService ~ sendFeedback ~ resData", resData)
-      }));
+    window.alert('Not implemented yet. Feedback will be sent to the FastAPI backend later.');
+    return of({
+      status: false,
+      debug: null,
+      code: 501,
+      errors: ['Not implemented yet'],
+      username: '',
+    });
   }
 
   /**
@@ -55,32 +52,10 @@ export class FeedbackService {
    */
   getFeedbackChartData() {
     // const token = "eyJraWQiOiIxOWZNTzc1ek5wOFAwNzNTeFY1MDJrMHk0SmFZY0R5a1VRbVNoaTR6bVFvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkZTg5YWE0Yi05MDk4LTQ1NzMtYmUyZi00YjdlNDA1NjNlM2QiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LWNlbnRyYWwtMS5hbWF6b25hd3MuY29tXC9ldS1jZW50cmFsLTFfSkhrWUxRODdtIiwiY29nbml0bzp1c2VybmFtZSI6ImRhdmlkZTIiLCJvcmlnaW5fanRpIjoiZjM5OGNmYTctZDc5Mi00Nzk2LWIyMmItZDk3NmNjMmZkODQzIiwiYXVkIjoiNnNhdDVibjU4czZvNmNpaWtlc2JpaTVjNXEiLCJldmVudF9pZCI6ImNkZWYzNzVmLTUxMWYtNDEyOS1hNTBiLWJhMDU5NmQxNzRhNiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjM0NDg3NDg4LCJleHAiOjE2MzQ0OTEwODgsImlhdCI6MTYzNDQ4NzQ4OSwianRpIjoiNjAzMjNkYWUtNjkyYy00ODQ3LTgzMzItYjQ4Zjc0YzQzYWUwIiwiZW1haWwiOiJkYXZpZGUucm9sYW5kb0BnbWFpbC5jb20ifQ.BwNeqzlAY-815iXFvY2cZatYHxhJgzCN1UQ6t6dhaHRtdheQQqn0GCx3fwuyC1rzOEHKdJom1EmPUvwnVfUlQRvUXSbnf5dqLQZiR3bMUgqfJtFPuT99bGQiHh3jCCPZRM1pj-IRl4dVMPGVHVfWMi0gl9N0kAnzLcPVQ856wO0AJRm1r-XSFZRqBWHK_8va4y_11YfUKVqyqRAHz4rICJukB2cnrVjkmBR3b8_IVa7s082z_MA-w-DDOLPKbHi9gQYlZJgdVGBamFVWJS-GMUHV_uttRz5iK6I9-V93VYG1uzXm0yeySS6R-ABrJvDSKr-lhJYPO5HNOqGi76JVKw"
-    return this.http.get<any>(this.chartApiUrl)
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          // Do something with the response
-          // console.log('My feedbacks:');
-          console.log(resData);
-        }),
-        map(resData => {
-          let resFeedbacks = resData.feedbacks;
-          let labels = [];
-          let feedbacks = [];
-
-          if (resFeedbacks && resFeedbacks.length) {
-            resFeedbacks.forEach(element => {
-              labels.push(element.codename);
-              feedbacks.push(+element.count);
-            });
-          }
-
-          return {
-            'labels': this.mapLabels(labels),
-            'feedbacks': feedbacks,
-          };
-        }),
-      );
+    return of({
+      'labels': ['Ok', 'Cold', 'Warm', 'Humid', 'Dry', 'Air quality', 'Noisy'],
+      'feedbacks': [0, 0, 0, 0, 0, 0, 0],
+    });
   }
 
   /**
@@ -88,32 +63,10 @@ export class FeedbackService {
    */
   getFeedbackNeighChartData() {
     // const token = "eyJraWQiOiIxOWZNTzc1ek5wOFAwNzNTeFY1MDJrMHk0SmFZY0R5a1VRbVNoaTR6bVFvPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkZTg5YWE0Yi05MDk4LTQ1NzMtYmUyZi00YjdlNDA1NjNlM2QiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmV1LWNlbnRyYWwtMS5hbWF6b25hd3MuY29tXC9ldS1jZW50cmFsLTFfSkhrWUxRODdtIiwiY29nbml0bzp1c2VybmFtZSI6ImRhdmlkZTIiLCJvcmlnaW5fanRpIjoiZjM5OGNmYTctZDc5Mi00Nzk2LWIyMmItZDk3NmNjMmZkODQzIiwiYXVkIjoiNnNhdDVibjU4czZvNmNpaWtlc2JpaTVjNXEiLCJldmVudF9pZCI6ImNkZWYzNzVmLTUxMWYtNDEyOS1hNTBiLWJhMDU5NmQxNzRhNiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjM0NDg3NDg4LCJleHAiOjE2MzQ0OTEwODgsImlhdCI6MTYzNDQ4NzQ4OSwianRpIjoiNjAzMjNkYWUtNjkyYy00ODQ3LTgzMzItYjQ4Zjc0YzQzYWUwIiwiZW1haWwiOiJkYXZpZGUucm9sYW5kb0BnbWFpbC5jb20ifQ.BwNeqzlAY-815iXFvY2cZatYHxhJgzCN1UQ6t6dhaHRtdheQQqn0GCx3fwuyC1rzOEHKdJom1EmPUvwnVfUlQRvUXSbnf5dqLQZiR3bMUgqfJtFPuT99bGQiHh3jCCPZRM1pj-IRl4dVMPGVHVfWMi0gl9N0kAnzLcPVQ856wO0AJRm1r-XSFZRqBWHK_8va4y_11YfUKVqyqRAHz4rICJukB2cnrVjkmBR3b8_IVa7s082z_MA-w-DDOLPKbHi9gQYlZJgdVGBamFVWJS-GMUHV_uttRz5iK6I9-V93VYG1uzXm0yeySS6R-ABrJvDSKr-lhJYPO5HNOqGi76JVKw"
-    return this.http.get<any>(this.chartNeighApiUrl)
-    .pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        // Do something with the response
-        // console.log('Neighbourhood feedbacks:');
-        // console.log(resData);
-      }),
-      map(resData => {
-        let resFeedbacks = resData.feedbacks;
-        let labels = [];
-        let feedbacks = [];
-
-        if (resFeedbacks && resFeedbacks.length) {
-          resFeedbacks.forEach(element => {
-            labels.push(element.codename);
-            feedbacks.push(+element.avg);
-          });
-        }
-
-        return {
-          'labels': this.mapLabels(labels),
-          'feedbacks': feedbacks,
-        };
-      }),
-    );
+    return of({
+      'labels': ['Ok', 'Cold', 'Warm', 'Humid', 'Dry', 'Air quality', 'Noisy'],
+      'feedbacks': [0, 0, 0, 0, 0, 0, 0],
+    });
   }
 
   private mapLabels(labels: string[])

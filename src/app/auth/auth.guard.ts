@@ -22,18 +22,7 @@ export class AuthGuard implements CanActivate {
     | UrlTree
     | Promise<boolean | UrlTree>
     | Observable<boolean | UrlTree> {
-    return this.authService.user.pipe(
-      map((user) => {
-        const isAuth = !!user;
-        console.log('Info from guard: user? ', user);
-        if (isAuth) {
-          return true;
-        }
-
-        // Returna UrlTree
-        return this.router.createUrlTree(['/auth']);
-      })
-    );
+    return true;
 
     // Old redirect approach that can lead to weird behaviors
     // return this.authService.user.pipe(

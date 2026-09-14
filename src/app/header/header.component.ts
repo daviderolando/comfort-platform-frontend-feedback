@@ -67,7 +67,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.notifChangeSub.unsubscribe();
     }
 
-    this.notificationTimeInterval.unsubscribe();
+    if (this.notificationTimeInterval) {
+      this.notificationTimeInterval.unsubscribe();
+    }
   }
 
   onLogout() {

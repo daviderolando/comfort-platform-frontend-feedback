@@ -129,34 +129,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     // console.log(this.feedbackForm);
     // this.router.navigate(['/'], {relativeTo: this.route});
 
-    // Send feedback via http request through the FeedbackService
-    this.subFeedbackAdd = this.feedbackService
-      .sendFeedback({
-        codename: this.feedbackTypeSelected,
-        comment: this.feedbackForm.value.comment,
-        // intensity: +this.feedbackForm.value.intensity
-        intensity: +this.intensityValue
-      })
-      .subscribe(
-        (response) => {
-          // // console.log(response);
-          if (response.status) {
-            this.feedbackAdded = true;
-            setTimeout(() => {
-              this.feedbackAdded = false;
-            }, 3000);
-          }
-        },
-        (err) => {
-          // console.log(err)
-          this.feedbackAddedSoon = true;
-          this.errorMessages = err;
-          setTimeout(() => {
-            this.feedbackAddedSoon = false;
-            this.errorMessages = [];
-          }, 5000);
-        }
-      );
+    window.alert('Not implemented yet. Feedback will be sent to the FastAPI backend later.');
 
     // Return to the original Feedback panel
     this.isFeedbackSelected = false;

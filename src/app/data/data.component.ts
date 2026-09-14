@@ -210,167 +210,24 @@ export class DataComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subFeed1 = this.feedbackService
-      .getFeedbackChartData()
-      .subscribe((data) => {
-        // Calculate max-y
-        this.yAxisMax1 = this.calculateMaxY(data.feedbacks);
+    const feedbackLabels = ['Ok', 'Cold', 'Warm', 'Humid', 'Dry', 'Air quality', 'Noisy'];
+    const myFeedbacks = [0, 0, 0, 0, 0, 0, 0];
+    const neighborhoodFeedbacks = [0, 0, 0, 0, 0, 0, 0];
 
-        // console.log('Feedback my data (at Component level)');
-        // console.log(data);
+    this.barChartLabels = feedbackLabels;
+    this.barChartData = [{ data: myFeedbacks, label: 'Feedbacks' }];
+    this.neighChartLabels = feedbackLabels;
+    this.neighChartData = [{ data: neighborhoodFeedbacks, label: 'Feedbacks' }];
 
-        // User Feedbacks
-        this.barChartLabels = data.labels;
-        this.barChartData = [{ data: data.feedbacks, label: 'Feedbacks' }];
-      });
-
-    this.subFeed2 = this.feedbackService
-      .getFeedbackNeighChartData()
-      .subscribe((data) => {
-        // Calculate max-y
-        this.yAxisMax1 = this.calculateMaxY(data.feedbacks);
-
-        // console.log('Feedback neighbourhood data (at Component level)');
-        // console.log(data);
-
-        // neighborhood Feedbacks
-        this.neighChartLabels = data.labels;
-        this.neighChartData = [{ data: data.feedbacks, label: 'Feedbacks' }];
-      });
-
-    // Weather data: Current Weather
-    // this.subWeath1 = this.dataService.getCurrentWeather().subscribe((data) => {
-    //   // console.log(data);
-    // });
-    // Weather data: Last Day Weather
-    // this.subWeath2 = this.dataService.getLastDayWeather().subscribe((data) => {
-    this.subWeath2 = this.dataService.getLastDayWeatherDirect().subscribe((data) => {
-      if (!data.location){
-        return;
-      }
-      // console.log('Component data:');
-      // console.log(data);
-      this.location = data.location;
-
-      // Weather data
-      this.yWeathMin = data.minT;
-      this.yWeathMax = data.maxT;
-
-      this.lineChartLabels = data.labels;
-      this.lineChartData = [
-        { data: data.temp, label: 'Outdoor Temperature [\u{2103}]' },
-      ];
-
-      this.lineChartOptions = {
-        responsive: true,
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                min: this.yWeathMin,
-                max: this.yWeathMax,
-                beginAtZero: false,
-                callback: function (value, index, values) {
-                  return +value % 2 == 0 ? value : '';
-                },
-              },
-            },
-          ],
-        },
-        elements: {
-          line: {
-            fill: false,
-          },
-        },
-      };
-    });
-
-    // Weather forecast
-    this.subWeath3 = this.dataService.getForecastWeatherDirect().subscribe((data) => {
-
-      if (!data.location){
-        return;
-      }
-      // console.log('Component weather forecast...');
-      // console.log(data);
-      this.location = data.location;
-
-      // Weather forecast data
-      this.yWeathForeMin = data.minT;
-      this.yWeathForeMax = data.maxT;
-
-      // Icons
-      const icons = data.icons;
-      let iconsImg = [];
-      for ( let j = 0; j < data.icons.length; j++)
-      {
-        let iconTmp = new Image();
-        iconTmp.src = data.icons[j];
-        iconsImg.push(iconTmp);
-      }
-      // console.log(iconsImg);
-
-      var icon0 = new Image();
-      icon0.src = icons[0];
-
-      this.forecastChartLabels = data.labels;
-      this.forecastChartData = [
-        {
-          data: data.temp,
-          label: 'Outdoor Temperature [\u{2103}]',
-          pointStyle: 'triangle',
-        },
-      ];
-
-      this.forecastChartOptions = {
-        responsive: true,
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                min: this.yWeathForeMin,
-                max: this.yWeathForeMax,
-                beginAtZero: false,
-                callback: function (value, index, values) {
-                  return +value % 2 == 0 ? value : '';
-                },
-              },
-            },
-          ],
-        },
-        elements: {
-          line: {
-            fill: false,
-          },
-        },
-      };
-
-      this.forecastChartPlugins = [{
-        afterUpdate: function(chart) {
-          // console.log(chart);
-          const chart_id = chart.id;
-          const dataMeta = chart.config.data.datasets[0]._meta[chart_id];
-          // console.log(chart.config.data.datasets[0]._meta);
-          // console.log(chart.config.data.datasets[0]._meta);
-          // console.log('Data meta length:')
-          // console.log(dataMeta.data.length);
-          // chart.config.data.datasets[0]._meta[chart_id].data[2]._model.pointStyle = 'star';
-
-          for (let i = 0; i < dataMeta.data.length; i++)
-          {
-            // console.log('Step: ' + i);
-            dataMeta.data[i]._model.pointStyle = iconsImg[i];
-            // if ( i % 2 == 0)
-            // {
-            //   dataMeta.data[i]._model.pointStyle = 'triangle';
-            // } else {
-            //   dataMeta.data[i]._model.pointStyle = 'cross';
-            // }
-          }
-          // chart.config.data.datasets[1]._meta[0].data[2]._model.pointStyle = icon0;
-        }
-      }];
-    });
+    this.location = 'Not implemented yet';
+    this.lineChartLabels = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'];
+    this.lineChartData = [
+      { data: [0, 0, 0, 0, 0, 0], label: 'Outdoor Temperature [\u{2103}]' },
+    ];
+    this.forecastChartLabels = this.lineChartLabels;
+    this.forecastChartData = [
+      { data: [0, 0, 0, 0, 0, 0], label: 'Outdoor Temperature [\u{2103}]' },
+    ];
   }
 
   private calculateMaxY(data: number[]) {

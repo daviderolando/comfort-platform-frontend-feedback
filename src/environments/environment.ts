@@ -4,17 +4,13 @@
 
 export const environment = {
   production: false,
-  loginEndPointAPI: "http://web1804.com/lisb-comfort-kit/web/v1/oauth/login",
-  // feedbackEndPointAPI: "http://web1804.com/lisb-comfort-kit/web/v1/feedback",
-  feedbackEndPointAPI: "https://sy61kbz415.execute-api.eu-central-1.amazonaws.com/devA/feedback",
-  // notificationEndPointAPI: "http://web1804.com/lisb-comfort-kit/web/v1/notification",
-  notificationEndPointAPI: "https://sy61kbz415.execute-api.eu-central-1.amazonaws.com/devA/notification",
-  // weatherEndPointAPI: "http://web1804.com/lisb-comfort-kit/web/v1/weather",
-  weatherEndPointAPI: "https://sy61kbz415.execute-api.eu-central-1.amazonaws.com/devA/weather",
-  signupEndPointAPI: "http://web1804.com/lisb-comfort-kit/web/v1/signup",
-  termsEndPointAPI: "http://web1804.com/lisb-comfort-kit/web/v1/resource/app-terms-conditions",
-  cognitoUserPoolId: "eu-central-1_16JFq8XTg",
-  cognitoClientId: "5vq2kfomf27dpu7lqt7hg7urg3",
+  apiBaseUrl: "http://localhost:8000",
+  loginEndPointAPI: "http://localhost:8000/auth/login",
+  feedbackEndPointAPI: "http://localhost:8000/feedback",
+  notificationEndPointAPI: "http://localhost:8000/notifications",
+  weatherEndPointAPI: "http://localhost:8000/weather",
+  signupEndPointAPI: "http://localhost:8000/signup",
+  termsEndPointAPI: "http://localhost:8000/terms",
 };
 
 /*

@@ -2,6 +2,7 @@ import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from './../../environments/environment';
+import { of } from 'rxjs';
 
 export interface SignupVerifyResponse {
   status: boolean;
@@ -42,24 +43,21 @@ export class SignupService {
     };
     console.log("Signup request body:");
     console.log(body);
-    return this.http.post<SignupSubmitResponse>(this.apiSignUpUrl, body).pipe(
-      tap((resData) => {
-        // console.log('Signup code response (tap):');
-        // console.log(resData);
-      })
-    );
+    return of({
+      status: false,
+      username: '',
+      pin: '',
+      debug: 'Not implemented yet',
+    });
   }
 
   public verifySignupCode(signupCode: string) {
     const body = {
       check_id: signupCode,
     };
-    return this.http.post<SignupVerifyResponse>(this.apiSignUpUrl, body).pipe(
-      tap((resData) => {
-        // console.log('Verify code response (tap):');
-        // console.log(resData);
-      })
-    );
+    return of({
+      status: false,
+    });
   }
 
   public setNewCredentials(username: string, pin: string){

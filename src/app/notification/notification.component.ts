@@ -20,19 +20,6 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.arrNotifications = this.notificationService.arrNotifications;
 
-    this.notifSub = this.notificationService.getUserNotifications().subscribe(
-      data => {
-        // console.log('Notification header subscription:');
-        // console.log(data);
-        if ( data.notifications ) {
-          // this.notificationService.arrNotifications = data.notifications;
-          // this.notificationService.notificationChanged.next([...data.notifications]);
-          // this.arrNotifications = [...data.notifications];
-          this.arrNotifications = this.notificationService.arrNotifications;
-        }
-      }
-    );
-
 
     // if(this.notificationService.hasNotifications.length)
     // {
@@ -41,16 +28,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
   }
 
   onGotIt(idx: number, hash: string){
-    // console.log(idx + ' ' + hash);
-
-    // this.arrNotifications.splice(idx, 1);
-    this.arrNotifications = this.arrNotifications.filter(el => {
-      return el.hash != hash;
-    });
-
-    this.delNotifSub = this.notificationService.delUserNotification(idx, hash).subscribe();
-    // this.notificationService.arrNotifications = [...this.notificationService.arrNotifications];
-    // this.notificationService.notificationChanged.next([...this.notificationService.arrNotifications]);
+    window.alert('Not implemented yet. Notification updates will be connected to the FastAPI backend later.');
   }
 
   ngOnDestroy(){

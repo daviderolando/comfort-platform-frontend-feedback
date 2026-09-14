@@ -51,43 +51,11 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onTestObs() {
-    const signupObs = new Observable( (observer: Observer<any>) => {
-      setInterval(
-        () => {
-          let randomNumber = Math.floor(Math.random() * 10);
-          if(randomNumber == 8){
-            observer.error("Error while generating random number: " + randomNumber);
-          } else if(randomNumber == 9){
-            observer.complete();
-          }else {
-            observer.next(randomNumber);
-          }
-        }, 1000);
-
-    });
-
-    signupObs.subscribe((data: Number) => {
-      console.log("Next Number: " + data);
-      }, error => {
-        console.log(error);
-      }, ()=>{
-        console.log("Observable Completed");
-    });
+    window.alert('Not implemented yet.');
   }
 
   onTestSignUp() {
-    this.signupSub = this.authService.signUp('davide2', 'Testpass99', 'davide.rolando@gmail.com').subscribe(
-      data => {
-        console.log("SignUp / Subscribe", data);
-        this.confirmUser = true;
-      },
-      err => {
-        console.log("Error caught at Subscriber " + err);
-        this.signupError = true;
-        this.signupErrorMessage = err;
-        this.confirmUser = false;
-      }
-    );
+    window.alert('Not implemented yet. Signup will be connected to the FastAPI backend later.');
   }
 
   onConfirmToggle() {
@@ -95,7 +63,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onConfirm(formValue: { usrName: string, validationCode: string }) {
-    this.authService.confirmUser(formValue.usrName, formValue.validationCode);
+    window.alert('Not implemented yet. Account confirmation will be connected to the FastAPI backend later.');
   }
 
   onSubmitSignUp(form: NgForm){
@@ -103,12 +71,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const usrName = form.value.username;
-    const email = form.value.email;
-    const password = form.value.password;
-    this.authService.signUp(usrName, password, email).subscribe(data => {
-      console.log("SignUp / Subscribe", data);
-    });
+    window.alert('Not implemented yet. Signup will be connected to the FastAPI backend later.');
+    form.reset();
   }
 
   onSubmit(form: NgForm){
@@ -116,23 +80,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const code = form.value.signupcode;
-
-    this.verifySub = this.signupService.verifySignupCode(code).subscribe(resData => {
-      // console.log('Verify code response (subscribe):');
-      // console.log(resData);
-
-      if (resData.status){
-        // Code is valid -> redirect
-        this.router.navigateByUrl('/signup' + '/' + code);
-      } else {
-        // Code is not valid -> show error
-        this.isValid = false;
-        setTimeout(() => {
-          this.isValid = true;
-        }, 3000)
-      }
-    });
+    window.alert('Not implemented yet. Signup code verification will be connected to the FastAPI backend later.');
 
   }
 

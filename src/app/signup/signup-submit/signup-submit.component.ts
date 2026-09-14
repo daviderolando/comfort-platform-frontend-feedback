@@ -30,19 +30,6 @@ export class SignupSubmitComponent implements OnInit {
       // console.log('The parameter signup code is: ', this.signupCode);
     });
 
-    // Verify code
-    this.verifySub = this.signupService
-      .verifySignupCode(this.signupCode)
-      .subscribe((resData) => {
-        // console.log('Verify code response (signup subscribe):', resData.status);
-
-        if (!resData.status) {
-          // Code is not valid -> redirect
-          this.signupService.invalidSignupCode = true;
-          this.router.navigateByUrl('/signup');
-        }
-      });
-
     // Populate valid years of birth
     const setYears = () => {
       const thisYear = new Date().getFullYear();
@@ -61,33 +48,7 @@ export class SignupSubmitComponent implements OnInit {
       return;
     }
 
-    const code = this.signupCode;
-    const nationality = form.value.nationality;
-    const gender = form.value.gender;
-    const year_of_birth = form.value.year_of_birth;
-
-    this.submitSub = this.signupService
-      .signupWithCode(code, nationality, gender, year_of_birth)
-      .subscribe((resData) => {
-        // console.log('Signup code response (subscribe):');
-        // console.log(resData);
-
-        if (resData.status) {
-          // Submission succeded
-          // Store temporary new credentials
-          const createdUsername = resData.username;
-          const createdPin = resData.pin;
-          this.signupService.setNewCredentials(createdUsername, createdPin);
-          // Redirect
-          this.router.navigateByUrl('/signup/signup-success');
-        } else {
-          // Submission failed -> show error
-          this.isSuccess = false;
-          setTimeout(() => {
-            this.isSuccess = true;
-          }, 3000);
-        }
-      });
+    window.alert('Not implemented yet. Anonymous account creation will be connected to the FastAPI backend later.');
   }
 
   ngOnDestroy() {
