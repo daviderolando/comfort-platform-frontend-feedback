@@ -1,0 +1,21 @@
+<div class="row mt-3">
+  <h3>Create anonymous account</h3>
+  <div class="col-xs-12 col-md-4 col-md-offset-4">
+
+    <div class="alert alert-info">
+      <p>Your account was created successfully!<p>
+      <p><b>Please take note of your personal unique credentials.</b></p>
+      <p><b>This information will not be anymore available once you leave this page.</b></p>
+    </div>
+
+    <h5>Username</h5>
+    <p>{{ tempUsername }}</p>
+    <h5>Pin</h5>
+    <p>{{ tempPin }}</p>
+
+    <div class="alert alert-info">
+      <p>You can now login!<p>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="onLoginRedirect()">Login</button>
+  </div>
+</div>

@@ -16,16 +16,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  // it(`should have as title 'ng-first-app'`, () => {
+  // it(`should have as title 'ng-feedback-app'`, () => {
   //   const fixture = TestBed.createComponent(AppComponent);
   //   const app = fixture.componentInstance;
-  //   expect(app.title).toEqual('ng-first-app');
+  //   expect(app.title).toEqual('ng-feedback-app');
   // });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('ng-first-app app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('ng-feedback-app app is running!');
   });
 });

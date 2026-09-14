@@ -61,3 +61,10 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+/**
+ * Patch for error "Uncaught ReferenceError: global is not defined"
+ * See here: https://github.com/Cordobo/angularx-qrcode/issues/79
+ * See here: https://github.com/angular/angular-cli/issues/8160#issuecomment-386153833
+ */
+ (window as any).global = window;

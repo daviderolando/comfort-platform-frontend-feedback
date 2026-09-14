@@ -1,0 +1,25 @@
+<div class="col-md-12 col-lg-6 mx-auto">
+
+  <div *ngIf="arrNotifications.length >= 0">
+
+    <div class="card mt-2 mb-1" *ngFor="let notification of arrNotifications; let i = index">
+      <h5 class="card-header">Notification</h5>
+      <div class="card-body">
+        <!-- <h5 class="card-title">Special title treatment</h5> -->
+        <p class="card-text">{{ notification.content }}</p>
+
+        <div class="text-end">
+          <a (click)="onGotIt( i, notification.hash )" class="btn btn-primary">Got it!</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="!!!arrNotifications.length">
+    <p>You have no notifications to read.</p>
+  </div>
+
+</div>
+

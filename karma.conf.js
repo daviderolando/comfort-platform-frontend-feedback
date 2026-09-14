@@ -19,7 +19,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/ng-first-app'),
+      dir: require('path').join(__dirname, './coverage/ng-feedback-app'),
       subdir: '.',
       reporters: [
         { type: 'html' },

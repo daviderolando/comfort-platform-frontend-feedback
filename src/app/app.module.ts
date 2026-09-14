@@ -1,20 +1,65 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
-import { PersonsComponent } from './persons/persons.component';
-import { PersonInputComponent } from './persons/person-input.component';
-import { AppRoutingModule } from "./app-routing.module";
+// import { PersonsComponent } from './_persons/persons.component';
+import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './header/header.component';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { AuthComponent } from './auth/auth.component';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { DataComponent } from './data/data.component';
+import { NotificationComponent } from './notification/notification.component';
+import { SignupComponent } from './signup/signup.component';
+import { SignupSubmitComponent } from './signup/signup-submit/signup-submit.component';
+import { TermsComponent } from './terms/terms.component';
+import { SignupSuccessComponent } from './signup/signup-success/signup-success.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
+/* Add Amplify imports */
+// import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular';
+// import Amplify from 'aws-amplify';
+// import awsconfig from '../aws-exports';
+
+/* Configure Amplify resources */
+// Amplify.configure(awsconfig);
 
 @NgModule({
-  declarations: [AppComponent, PersonsComponent, PersonInputComponent ],
-  imports: [
-    BrowserModule, FormsModule, AppRoutingModule, HttpClientModule
+  declarations: [
+    AppComponent,
+    // PersonsComponent,
+    HeaderComponent,
+    FeedbackComponent,
+    AuthComponent,
+    DataComponent,
+    NotificationComponent,
+    SignupComponent,
+    SignupSubmitComponent,
+    TermsComponent,
+    SignupSuccessComponent,
   ],
-  providers: [],
+  imports: [
+    // AmplifyUIAngularModule,
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    ChartsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
-  exports: [PersonInputComponent]
+  exports: [],
 })
-export class AppModule { }
+export class AppModule {}

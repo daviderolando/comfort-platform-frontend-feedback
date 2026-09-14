@@ -1,0 +1,111 @@
+<div class="row">
+
+  <div class="alert alert-success" *ngIf="feedbackAdded">
+    <p>Thank you for your feedback!!!</p>
+  </div>
+  <div class="alert alert-warning" *ngIf="feedbackAddedSoon">
+    <!-- <p>Thank you for your feedback!!!</p> -->
+    <p *ngFor="let error of errorMessages">{{ error }}</p>
+  </div>
+
+  <div class="col-md-12 col-lg-6 mx-auto" *ngIf="!isFeedbackSelected">
+    <div class="d-grid gap-2">
+      <!-- <hr> -->
+      <div class="btn-group btn-group-lg mt-2 mb-2" role="group" aria-label="Everything OK">
+        <button class="btn btn-custom-ok bg-btn-ok" type="button" (click)="onFeedback('all-good')">Everything Ok!</button>
+      </div>
+      <!-- <hr> -->
+      <div class="btn-group btn-group-lg mt-2 mb-2" role="group" aria-label="Temperature">
+        <button class="btn w-100 btn-custom-cold bg-btn-cold" type="button" (click)="onFeedback('too-cold')">Too cold</button>
+        <button class="btn w-100 btn-custom-warm bg-btn-warm" type="button" (click)="onFeedback('too-warm')">Too warm</button>
+      </div>
+      <!-- <hr> -->
+      <div class="btn-group btn-group-lg mt-2 mb-2" role="group" aria-label="Humidity">
+        <button class="btn w-100 btn-custom-humid bg-btn-humid" type="button" (click)="onFeedback('too-humid')">Too humid</button>
+        <button class="btn w-100 btn-custom-dry bg-btn-dry" type="button" (click)="onFeedback('too-dry')">Too dry</button>
+      </div>
+      <!-- <hr> -->
+      <div class="btn-group btn-group-lg mt-2 mb-2" role="group" aria-label="Air quality">
+        <button class="btn btn-custom-poor-air bg-btn-poor-air" type="button" (click)="onFeedback('poor-air-quality')">Poor Air Quality</button>
+      </div>
+      <!-- <hr> -->
+      <div class="btn-group btn-group-lg mt-2 mb-2" role="group" aria-label="Noise">
+        <button class="btn btn-custom-noisy bg-btn-noisy" type="button" (click)="onFeedback('too-noisy')">Noise!</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-lg-6 mx-auto" *ngIf="isFeedbackSelected">
+    <div class="alert alert-danger" *ngIf="!feedbackForm.valid">
+      <p [hidden]="!comment.errors.maxlength">
+        The comment should be shorter than 100 characters
+      </p>
+      <p [hidden]="!comment.errors.pattern">
+        Please use only plain text in the comment
+      </p>
+      <!-- <p [hidden]="feedbackForm.hasError('whitespace')">
+        White space error
+      </p> -->
+    </div>
+    <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-12 mt-3">
+
+          <div class="form-group">
+
+            <div *ngIf="intensityNeeded">
+              <label for="intensity" class="form-label">How would you define the intensity?</label>
+              <span><small> (<b>{{ intensityLevel[intensityValue] }}</b>)</small></span>
+              <!-- <input
+                type="range"
+                name="intensity"
+                id="intensity"
+                min="1"
+                max="3"
+                [formControlName]="'intensity'"
+                class="form-range"
+                #intensity
+                (change)="changeIntensity(intensity.value)"
+              > -->
+
+              <div class="btn-group btn-group-toggle fullwidth" data-toggle="buttons-radio">
+                <label class="btn btn-secondary low" [ngClass]="{'active' : intensityValue == 1}">
+                  <input type="radio" name="intensity" id="option1" value="1" autocomplete="off" (click)="changeIntensity(1)" [active]="intensityValue == 1"> Low
+                </label>
+                <label class="btn btn-secondary medium" [ngClass]="{'active' : intensityValue == 2}">
+                  <input type="radio" name="intensity" id="option2" value="2" autocomplete="off" (click)="changeIntensity(2)" [active]="intensityValue == 2"> Medium
+                </label>
+                <label class="btn btn-secondary high" [ngClass]="{'active' : intensityValue == 3}">
+                  <input type="radio" name="intensity" id="option3" value="3" autocomplete="off" (click)="changeIntensity(3)" [active]="intensityValue == 3"> High
+                </label>
+              </div>
+
+            <br>
+            </div>
+
+            <label for="comment">Do you want to add a comment?</label>
+            <input
+              type="text"
+              name="comment"
+              id="comment"
+              [formControlName]="'comment'"
+              class="form-control"
+              placeholder="I send this feedback because ..."
+            >
+            <br>
+            <div class="d-grid gap-2">
+              <button
+                class="btn btn-success"
+                type="submit"
+                [disabled]="!feedbackForm.valid"
+              >Send Feedback</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>

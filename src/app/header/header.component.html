@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" (focusout)="onFocusOut()">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="hasNotifications.length ? '/notification' : '/feedback'">Comfort App <span class="badge bg-warning" *ngIf="hasNotifications.length > 0">{{ hasNotifications.length }}</span></a>
+    <button id="navbar-toggler-button" (click)="onShowMenu()" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/feedback">Feedbacks</a>
+        </li>
+
+        <li>
+          <a class="nav-link" routerLink="/notification">Notifications</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/data">Data</a>
+        </li>
+      </ul>
+
+      <hr>
+
+      <ul class="navbar-nav ml-auto">
+        <!-- <hr> -->
+        <li class="nav-item" *ngIf="!isAuthenticated">
+          <a class="nav-link" routerLink="/auth">Login</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated">
+          <a class="nav-link" (click)="onLogout()">Logout</a>
+        </li>
+        <li class="nav-item" *ngIf="!isAuthenticated">
+          <a class="nav-link" routerLink="/signup">SignUp</a>
+        </li>
+      </ul>
+
+      <hr>
+
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/terms">Terms</a>
+        </li>
+      </ul>
+
+      <div>
+        <hr>
+      </div>
+    </div>
+  </div>
+</nav>
