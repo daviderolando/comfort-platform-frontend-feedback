@@ -85,7 +85,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     // Init intensity
     this.intensityValue = 1;
     // Don't show intensity for all-good
-    if (feedbackType != 'all-good') {
+    if (feedbackType != 'everything_ok') {
       this.intensityNeeded = true;
     } else {
       this.intensityNeeded = false;
@@ -129,10 +129,29 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     // console.log(this.feedbackForm);
     // this.router.navigate(['/'], {relativeTo: this.route});
 
-    window.alert('Not implemented yet. Feedback will be sent to the FastAPI backend later.');
+    const feedbackData: FeedbackRequestData = {
+      codename: this.feedbackTypeSelected,
+      comment: (this.feedbackForm.value.comment || '').trim(),
+    };
 
-    // Return to the original Feedback panel
-    this.isFeedbackSelected = false;
+    if (this.intensityNeeded) {
+      feedbackData.intensity = this.intensityValue;
+    }
+
+    this.subFeedbackAdd = this.feedbackService.sendFeedback(feedbackData).subscribe(
+      () => {
+        this.feedbackAdded = true;
+        this.feedbackAddedSoon = false;
+        this.errorMessages = [];
+        this.isFeedbackSelected = false;
+        this.initForm();
+      },
+      (errors) => {
+        this.feedbackAdded = false;
+        this.feedbackAddedSoon = true;
+        this.errorMessages = Array.isArray(errors) ? errors : [errors];
+      }
+    );
   }
 
   // noWhitespaceValidator(control: FormControl) {

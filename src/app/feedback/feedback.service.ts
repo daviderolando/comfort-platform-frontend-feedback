@@ -15,11 +15,13 @@ export interface FeedbackRequestData {
 }
 
 export interface FeedbackResponseAdd {
-  "status": boolean,
-  "debug": any,
-  "code": number,
-  "errors": string[],
-  "username": string
+  id: number;
+  user_id: number;
+  feedback_type_id: number;
+  intensity?: number;
+  comment?: string;
+  extra?: any;
+  created_at?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -36,15 +38,17 @@ export class FeedbackService {
    * Send Feedback
    * @param addFeedbackPost
    */
-  sendFeedback(addFeedbackPost: FeedbackRequestData) {
-    window.alert('Not implemented yet. Feedback will be sent to the FastAPI backend later.');
-    return of({
-      status: false,
-      debug: null,
-      code: 501,
-      errors: ['Not implemented yet'],
-      username: '',
-    });
+  sendFeedback(addFeedbackPost: FeedbackRequestData): Observable<FeedbackResponseAdd> {
+    const body = {
+      codename: addFeedbackPost.codename,
+      intensity: addFeedbackPost.intensity,
+      comment: addFeedbackPost.comment,
+      extra: addFeedbackPost.extra || null,
+    };
+
+    return this.http.post<FeedbackResponseAdd>(this.addApiUrl, body).pipe(
+      catchError(this.handleError)
+    );
   }
 
   /**
@@ -74,12 +78,19 @@ export class FeedbackService {
     let newLabels = [];
     const labelMap = {
       'all-good' : 'Ok',
+      'everything_ok' : 'Ok',
       'too-humid' : 'Humid',
+      'too_humid' : 'Humid',
       'too-dry' : 'Dry',
+      'too_dry' : 'Dry',
       'too-noisy' : 'Noisy',
+      'noise' : 'Noisy',
       'poor-air-quality' : 'Air quality',
+      'poor_air_quality' : 'Air quality',
       'too-cold' : 'Cold',
-      'too-warm' : 'Warm'
+      'too_cold' : 'Cold',
+      'too-warm' : 'Warm',
+      'too_warm' : 'Warm'
     }
 
     labels.forEach(el => {
@@ -99,6 +110,10 @@ export class FeedbackService {
     let errorMessage = 'An unknown error occurred.';
 
     // console.log(errorRes);
+
+    if (errorRes.error && errorRes.error.detail) {
+      return throwError(errorRes.error.detail);
+    }
 
     if (!errorRes.error || !errorRes.error.code || !errorRes.error.errors){
       return throwError(errorMessage);

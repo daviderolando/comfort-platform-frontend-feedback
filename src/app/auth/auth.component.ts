@@ -37,17 +37,24 @@ export class AuthComponent implements OnInit {
       return;
     }
 
-    this.isLoading = false;
+    this.isLoading = true;
+    this.error = null;
 
     const username = form.value.username;
     const password = form.value.password;
 
-    // Definition of an Observable of type AuthResponseData (defined in auth.service.ts)
-    // let authObs: Observable<AuthResponseData>;
-    let authObs: Observable<any>;
+    const authObs: Observable<AuthResponseData> = this.authService.signIn(username, password);
 
-    window.alert('Not implemented yet. Login will be connected to the FastAPI backend later.');
-    this.router.navigate(['/feedback']);
-    form.reset();
+    authObs.subscribe(
+      () => {
+        this.isLoading = false;
+        this.router.navigate(['/feedback']);
+        form.reset();
+      },
+      (errorMessage) => {
+        this.isLoading = false;
+        this.error = errorMessage;
+      }
+    );
   }
 }

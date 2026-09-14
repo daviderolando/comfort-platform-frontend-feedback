@@ -4,13 +4,15 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "http://localhost:8000",
-  loginEndPointAPI: "http://localhost:8000/auth/login",
-  feedbackEndPointAPI: "http://localhost:8000/feedback",
-  notificationEndPointAPI: "http://localhost:8000/notifications",
-  weatherEndPointAPI: "http://localhost:8000/weather",
-  signupEndPointAPI: "http://localhost:8000/signup",
-  termsEndPointAPI: "http://localhost:8000/terms",
+  apiBaseUrl: "http://localhost:8000/api/v1",
+  feedbackUserId: 1,
+  loginEndPointAPI: "http://localhost:8000/api/v1/auth/login",
+  feedbackEndPointAPI: "http://localhost:8000/api/v1/feedback",
+  feedbackOptionsEndPointAPI: "http://localhost:8000/api/v1/feedback-options",
+  notificationEndPointAPI: "http://localhost:8000/api/v1/notifications",
+  weatherEndPointAPI: "http://localhost:8000/api/v1/weather",
+  signupEndPointAPI: "http://localhost:8000/api/v1/signup",
+  termsEndPointAPI: "http://localhost:8000/api/v1/terms",
 };
 
 /*

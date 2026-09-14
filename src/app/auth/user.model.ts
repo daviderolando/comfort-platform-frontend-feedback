@@ -12,8 +12,6 @@ export class User {
   // This getter will make possible to call user.token as it was a property.
   // NB Getters are immutable
   get token() {
-    console.log("🚀 ~ file: user.model.ts ~ line 19 ~ User ~ gettoken ~ new Date().getTime()", new Date().getTime())
-    console.log("🚀 ~ file: user.model.ts ~ line 17 ~ User ~ gettoken ~ this._tokenExpirationTime", this._tokenExpirationTime * 1000)
     if (
       !this._tokenExpirationTime ||
       new Date().getTime() > this._tokenExpirationTime * 1000
@@ -71,5 +69,4 @@ export interface UserSession {
 //     return this._tokenExpirationTime;
 //   }
 // }
-
 
