@@ -1,153 +1,66 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
-import { User, SignUpResult } from './user.model';
 import { environment } from '../../environments/environment';
-
-export interface AuthResponseData {
-  access_token: string;
-  token_type: string;
-  user: {
-    id: number;
-    username: string;
-    is_active: boolean;
-    created_at?: string;
-    updated_at?: string;
-  };
-}
+import { AuthResponse, UserSession } from './auth.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  authIsLoading = new BehaviorSubject<boolean>(false);
-  authDidFail = new BehaviorSubject<boolean>(false);
-  authError = new BehaviorSubject<string>('');
-  authStatusChanged = new Subject<boolean>();
+  private readonly http = inject(HttpClient);
+  private readonly storageKey = 'ComfortApp.userSession';
+  private readonly sessionSubject = new BehaviorSubject<UserSession | null>(this.readStoredSession());
 
-  user = new BehaviorSubject<User>(null);
+  readonly session$ = this.sessionSubject.asObservable();
 
-  localId: string;
-  token: string;
-  email: string;
-  expiresIn: number;
-
-  APP_TOKEN = 'ComfortApp.accessToken';
-  APP_DATA = 'ComfortApp.userData';
-
-  constructor(private router: Router, private http: HttpClient) {}
-
-  signUp(username: string, password: string, email: string): Observable<SignUpResult> {
-    return of({
-      status: false,
-      username: username,
-      userId: '',
-      token: '',
-      expirationTime: 0,
-      error: 'Not implemented yet',
-    });
+  get session(): UserSession | null {
+    return this.sessionSubject.value;
   }
 
-  confirmUser(username: string, code: string) {
-    window.alert('Not implemented yet. Account confirmation will be connected to the FastAPI backend later.');
+  get accessToken(): string | null {
+    return this.session?.accessToken ?? null;
   }
 
-  signIn(username: string, password: string): Observable<AuthResponseData> {
+  get isLoggedIn(): boolean {
+    return !!this.accessToken;
+  }
+
+  login(username: string, password: string): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponseData>(environment.loginEndPointAPI, {
-        username: username,
-        password: password,
-      })
-      .pipe(
-        tap((responseData) => {
-          this.handleAuthentication(responseData);
-        }),
-        catchError(this.handleError)
-      );
+      .post<AuthResponse>(`${environment.apiBaseUrl}/auth/login`, { username, password })
+      .pipe(tap((response) => this.storeSession(response)));
   }
 
-  getAuthenticatedUser() {
-    return this.user.value;
+  logout(): void {
+    localStorage.removeItem(this.storageKey);
+    this.sessionSubject.next(null);
   }
 
-  getSessionToken() {
-    const currentUser = this.user.value;
-    return of(currentUser ? currentUser.token : null);
+  private storeSession(response: AuthResponse): void {
+    const session: UserSession = {
+      accessToken: response.access_token,
+      user: response.user,
+    };
+    localStorage.setItem(this.storageKey, JSON.stringify(session));
+    this.sessionSubject.next(session);
   }
 
-  logout() {
-    this.authStatusChanged.next(false);
-    this.removeLocalData();
-    this.user.next(null);
-    this.router.navigate(['/auth']);
-  }
-
-  isAuthenticated(): Observable<boolean> {
-    return of(!!this.user.value);
-  }
-
-  initAuth() {
-    this.authStatusChanged.next(!!this.user.value);
-  }
-
-  autoLogin() {
-    const userData = localStorage.getItem(this.APP_DATA);
-    if (!userData) {
-      this.user.next(null);
-      return;
+  private readStoredSession(): UserSession | null {
+    const rawSession = localStorage.getItem(this.storageKey);
+    if (!rawSession) {
+      return null;
     }
 
-    const parsedData = JSON.parse(userData);
-    const loadedUser = new User(
-      parsedData.username,
-      parsedData.id,
-      parsedData._token,
-      parsedData._refreshToken || '',
-      parsedData._tokenExpirationTime
-    );
-
-    if (loadedUser.token) {
-      this.user.next(loadedUser);
-    } else {
-      this.removeLocalData();
-      this.user.next(null);
+    try {
+      const session = JSON.parse(rawSession) as UserSession;
+      if (session.user.role !== 'admin' && session.user.role !== 'tenant') {
+        localStorage.removeItem(this.storageKey);
+        return null;
+      }
+      return session;
+    } catch {
+      localStorage.removeItem(this.storageKey);
+      return null;
     }
-  }
-
-  autoLogout(expirationDuration: number) {
-    return;
-  }
-
-  isLoggedIn() {
-    return !!this.user.value;
-  }
-
-  removeLocalData() {
-    localStorage.removeItem(this.APP_DATA);
-    localStorage.removeItem(this.APP_TOKEN);
-  }
-
-  private handleAuthentication(responseData: AuthResponseData) {
-    const expirationTime = Math.floor(new Date().getTime() / 1000) + 24 * 60 * 60;
-    const user = new User(
-      responseData.user.username,
-      responseData.user.id.toString(),
-      responseData.access_token,
-      '',
-      expirationTime
-    );
-
-    this.user.next(user);
-    this.authStatusChanged.next(true);
-    localStorage.setItem(this.APP_TOKEN, responseData.access_token);
-    localStorage.setItem(this.APP_DATA, JSON.stringify(user));
-  }
-
-  private handleError(errorRes: HttpErrorResponse) {
-    if (errorRes.error && errorRes.error.detail) {
-      return throwError(errorRes.error.detail);
-    }
-    return throwError('Login failed.');
   }
 }

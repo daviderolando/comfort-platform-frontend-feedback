@@ -1,0 +1,36 @@
+.login-page {
+  min-height: calc(100vh - 64px);
+  display: grid;
+  place-items: start center;
+  padding: 40px 16px;
+}
+
+.login-panel {
+  width: min(100%, 420px);
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin: 0 0 24px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+form,
+mat-form-field,
+button {
+  width: 100%;
+}
+
+.error {
+  color: var(--mat-sys-error);
+  margin: 0 0 16px;
+}
+
+mat-spinner {
+  display: inline-block;
+}

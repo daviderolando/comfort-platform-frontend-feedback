@@ -1,39 +1,11 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+
 import { AuthService } from './auth.service';
 
-@Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+export const authGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    router: RouterStateSnapshot
-  ):
-    | boolean
-    | UrlTree
-    | Promise<boolean | UrlTree>
-    | Observable<boolean | UrlTree> {
-    return true;
-
-    // Old redirect approach that can lead to weird behaviors
-    // return this.authService.user.pipe(
-    //   map((user) => {
-    //     return !!user;
-    //   }),
-    //   tap((isAuth) => {
-    //     if (!isAuth) {
-    //       this.router.navigate(['/auth']);
-    //     }
-    //   })
-    // );
-  }
-}
+  return authService.isLoggedIn ? true : router.createUrlTree(['/login']);
+};

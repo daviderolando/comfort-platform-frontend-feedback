@@ -1,0 +1,25 @@
+<main class="login-page">
+  <section class="login-panel">
+    <h1>Comfort App</h1>
+    <p class="subtitle">Sign in to send comfort feedback.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" autocomplete="username" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" autocomplete="current-password" />
+      </mat-form-field>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+        <span *ngIf="!isLoading">Login</span>
+      </button>
+    </form>
+  </section>
+</main>

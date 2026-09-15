@@ -1,0 +1,131 @@
+<main class="data-page">
+  <header class="page-header">
+    <div class="title-block">
+      <h1>Data</h1>
+      <p>Feedback activity over the last {{ days }} days.</p>
+    </div>
+    <button mat-icon-button type="button" (click)="refreshData()" [disabled]="isLoading || isLoadingAdmin" aria-label="Refresh data">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </header>
+
+  @if (isLoading) {
+    <div class="loading-state" aria-live="polite">
+      <mat-spinner diameter="42"></mat-spinner>
+    </div>
+  } @else if (errorMessage) {
+    <section class="message-state" aria-live="assertive">
+      <h2>Data unavailable</h2>
+      <p>{{ errorMessage }}</p>
+      <button mat-flat-button type="button" (click)="loadSummaries()">Try again</button>
+    </section>
+  } @else {
+    <mat-tab-group class="summary-tabs" mat-stretch-tabs="false" animationDuration="160ms">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon aria-hidden="true">feedback</mat-icon>
+          <span class="tab-text">My feedbacks</span>
+        </ng-template>
+
+        <section class="summary-section" aria-labelledby="my-feedbacks-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="my-feedbacks-title">My feedbacks</h2>
+              <p>Number of feedbacks you sent over the last {{ days }} days.</p>
+            </div>
+            <strong>{{ total(mySummary) }}</strong>
+          </div>
+          <div class="chart-wrap">
+            <canvas
+              baseChart
+              [type]="chartType"
+              [data]="myChartData"
+              [options]="chartOptions"
+            ></canvas>
+          </div>
+        </section>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon aria-hidden="true">apartment</mat-icon>
+          <span class="tab-text">My building</span>
+        </ng-template>
+
+        <section class="summary-section" aria-labelledby="my-building-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="my-building-title">My building</h2>
+              <p>Feedbacks from users assigned to your building over the last {{ days }} days.</p>
+            </div>
+            <strong>{{ total(buildingSummary) }}</strong>
+          </div>
+          <div class="chart-wrap">
+            <canvas
+              baseChart
+              [type]="chartType"
+              [data]="buildingChartData"
+              [options]="chartOptions"
+            ></canvas>
+          </div>
+        </section>
+      </mat-tab>
+
+      @if (isAdmin) {
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon aria-hidden="true">admin_panel_settings</mat-icon>
+            <span class="tab-text">Admin</span>
+          </ng-template>
+
+          <section class="summary-section" aria-labelledby="admin-feedback-title">
+            <div class="admin-filters" aria-label="Admin data filters">
+              <mat-form-field appearance="outline">
+                <mat-label>Building</mat-label>
+                <mat-select [(ngModel)]="selectedAdminBuildingId" (selectionChange)="loadAdminSummary()">
+                  <mat-option [value]="null">My building</mat-option>
+                  <mat-option *ngFor="let building of adminBuildings" [value]="building.id">{{ building.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Period</mat-label>
+                <mat-select [(ngModel)]="selectedAdminDays" (selectionChange)="loadAdminSummary()">
+                  <mat-option *ngFor="let option of periodOptions" [value]="option.days">{{ option.label }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            @if (isLoadingAdmin) {
+              <div class="loading-state compact" aria-live="polite">
+                <mat-spinner diameter="36"></mat-spinner>
+              </div>
+            } @else if (adminErrorMessage) {
+              <section class="message-state compact" aria-live="assertive">
+                <h2>Admin data unavailable</h2>
+                <p>{{ adminErrorMessage }}</p>
+                <button mat-flat-button type="button" (click)="loadAdminData()">Try again</button>
+              </section>
+            } @else {
+              <div class="section-heading">
+                <div>
+                  <h2 id="admin-feedback-title">Admin</h2>
+                  <p>Feedbacks for the selected building over {{ selectedPeriodLabel }}.</p>
+                </div>
+                <strong>{{ total(adminSummary) }}</strong>
+              </div>
+              <div class="chart-wrap">
+                <canvas
+                  baseChart
+                  [type]="chartType"
+                  [data]="adminChartData"
+                  [options]="chartOptions"
+                ></canvas>
+              </div>
+            }
+          </section>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  }
+</main>

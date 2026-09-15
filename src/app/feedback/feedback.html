@@ -1,0 +1,54 @@
+<main class="feedback-page">
+  <section class="feedback-panel" *ngIf="!selectedOption">
+    <div class="page-heading">
+      <h1>Feedbacks</h1>
+      <p>Tap the button that best describes your comfort.</p>
+    </div>
+
+    <div class="loading" *ngIf="isLoadingOptions">
+      <mat-spinner diameter="36"></mat-spinner>
+    </div>
+
+    <p class="error" *ngIf="loadError">{{ loadError }}</p>
+
+    <div class="button-grid" *ngIf="!isLoadingOptions && !loadError">
+      <button
+        mat-raised-button
+        type="button"
+        *ngFor="let option of options"
+        [ngClass]="cssClass(option)"
+        (click)="selectOption(option)"
+      >
+        {{ option.label }}
+      </button>
+    </div>
+  </section>
+
+  <section class="feedback-panel" *ngIf="selectedOption">
+    <div class="page-heading">
+      <h1>{{ selectedOption.label }}</h1>
+      <p>Add intensity and an optional comment.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-button-toggle-group formControlName="intensity" aria-label="Intensity">
+        <mat-button-toggle [value]="1">Low</mat-button-toggle>
+        <mat-button-toggle [value]="2">Medium</mat-button-toggle>
+        <mat-button-toggle [value]="3">High</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Comment</mat-label>
+        <input matInput formControlName="comment" maxlength="100" placeholder="I send this feedback because ..." />
+        <mat-hint align="end">{{ form.controls.comment.value.length }}/100</mat-hint>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-button type="button" (click)="cancelSelection()">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isSubmitting">
+          Send Feedback
+        </button>
+      </div>
+    </form>
+  </section>
+</main>

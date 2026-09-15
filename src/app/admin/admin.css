@@ -1,0 +1,94 @@
+.admin-page {
+  width: min(100%, 1080px);
+  margin: 0 auto;
+  padding: 28px 16px 56px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+p {
+  color: var(--mat-sys-on-surface-variant);
+  line-height: 1.45;
+}
+
+.filters {
+  display: flex;
+  margin-bottom: 18px;
+}
+
+mat-form-field {
+  width: min(100%, 360px);
+}
+
+.table-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.table-meta strong {
+  color: #155fa8;
+  font-size: 22px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border-top: 1px solid rgba(29, 34, 43, 0.12);
+}
+
+table {
+  width: 100%;
+  min-width: 780px;
+}
+
+.comment-cell {
+  max-width: 300px;
+  white-space: normal;
+}
+
+.loading-state,
+.message-state {
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.message-state {
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .admin-page {
+    padding: 20px 18px 44px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}

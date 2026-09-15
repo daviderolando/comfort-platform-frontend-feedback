@@ -1,0 +1,46 @@
+<mat-toolbar>
+  <button class="menu-trigger" mat-icon-button type="button" [matMenuTriggerFor]="mainMenu" aria-label="Open menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a class="brand" routerLink="/feedback">Comfort App</a>
+
+  <nav class="nav-links">
+    <a mat-button routerLink="/feedback" routerLinkActive="active-link">Feedbacks</a>
+    <a mat-button routerLink="/data" routerLinkActive="active-link">Data</a>
+    <a *ngIf="(session$ | async)?.user?.role === 'admin'" mat-button routerLink="/admin" routerLinkActive="active-link">Admin</a>
+  </nav>
+
+  <span class="spacer"></span>
+
+  <ng-container *ngIf="session$ | async as session; else loggedOut">
+    <span class="username">{{ session.user.username }}</span>
+    <button mat-button type="button" (click)="logout()">Logout</button>
+  </ng-container>
+
+  <ng-template #loggedOut>
+    <a mat-button routerLink="/login" routerLinkActive="active-link">Login</a>
+    <a mat-button routerLink="/terms" routerLinkActive="active-link">Terms</a>
+  </ng-template>
+</mat-toolbar>
+
+<mat-menu #mainMenu="matMenu">
+  <a mat-menu-item routerLink="/feedback">
+    <mat-icon>feedback</mat-icon>
+    <span>Feedbacks</span>
+  </a>
+  <a mat-menu-item routerLink="/data">
+    <mat-icon>bar_chart</mat-icon>
+    <span>Data</span>
+  </a>
+  <a *ngIf="(session$ | async)?.user?.role === 'admin'" mat-menu-item routerLink="/admin">
+    <mat-icon>admin_panel_settings</mat-icon>
+    <span>Admin</span>
+  </a>
+  <a mat-menu-item routerLink="/terms">
+    <mat-icon>description</mat-icon>
+    <span>Terms</span>
+  </a>
+</mat-menu>
+
+<router-outlet />
