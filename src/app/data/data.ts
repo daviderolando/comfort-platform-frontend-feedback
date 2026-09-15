@@ -228,6 +228,7 @@ export class Data implements OnInit {
     const colors: Record<string, string> = {
       blue: '#1976d2',
       gray: '#69727d',
+      grey: '#69727d',
       red: '#d82f45',
       success: '#188754',
       yellow: '#f4b400',

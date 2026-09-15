@@ -89,4 +89,22 @@ export const DEFAULT_FEEDBACK_OPTIONS: FeedbackOption[] = [
     sort_order: 70,
     color: 'yellow',
   },
+  {
+    id: 0,
+    group_id: null,
+    codename: 'slept_well',
+    label: 'Good sleep!',
+    group: 'sleep',
+    sort_order: 80,
+    color: 'success',
+  },
+  {
+    id: 0,
+    group_id: null,
+    codename: 'slept_poorly',
+    label: 'Poor sleep!',
+    group: 'sleep',
+    sort_order: 90,
+    color: 'grey',
+  },
 ];

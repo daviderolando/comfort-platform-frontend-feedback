@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -11,6 +12,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FeedbackOption } from './feedback.models';
 import { FeedbackService } from './feedback.service';
 
+interface FeedbackOptionGroup {
+  key: string;
+  label: string;
+  options: FeedbackOption[];
+  isAccordion: boolean;
+}
+
 @Component({
   selector: 'app-feedback',
   imports: [
@@ -18,6 +26,7 @@ import { FeedbackService } from './feedback.service';
     ReactiveFormsModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
@@ -32,6 +41,7 @@ export class Feedback implements OnInit {
   private readonly changeDetector = inject(ChangeDetectorRef);
 
   options: FeedbackOption[] = [];
+  optionGroups: FeedbackOptionGroup[] = [];
   selectedOption: FeedbackOption | null = null;
   isLoadingOptions = true;
   isSubmitting = false;
@@ -46,6 +56,7 @@ export class Feedback implements OnInit {
     this.feedbackService.getOptions().subscribe({
       next: (options) => {
         this.options = options;
+        this.optionGroups = this.groupOptions(options);
         this.isLoadingOptions = false;
         this.changeDetector.markForCheck();
       },
@@ -100,5 +111,42 @@ export class Feedback implements OnInit {
 
   cssClass(option: FeedbackOption): string {
     return `feedback-${option.color ?? 'default'}`;
+  }
+
+  trackGroup(_: number, group: FeedbackOptionGroup): string {
+    return group.key;
+  }
+
+  trackOption(_: number, option: FeedbackOption): string {
+    return `${option.id}-${option.codename}`;
+  }
+
+  private groupOptions(options: FeedbackOption[]): FeedbackOptionGroup[] {
+    const grouped = new Map<string, FeedbackOption[]>();
+    for (const option of options) {
+      const key = option.group || 'generic';
+      grouped.set(key, [...(grouped.get(key) ?? []), option]);
+    }
+
+    return [...grouped.entries()].map(([key, groupOptions]) => ({
+      key,
+      label: this.groupLabel(key),
+      options: groupOptions,
+      isAccordion: groupOptions.length > 1,
+    }));
+  }
+
+  private groupLabel(group: string): string {
+    const labels: Record<string, string> = {
+      air_quality: 'Air quality',
+      generic: 'General',
+      humidity: 'Humidity',
+      light: 'Light',
+      noise: 'Noise',
+      sleep: 'Sleep quality',
+      smell: 'Smell',
+      temperature: 'Temperature',
+    };
+    return labels[group] ?? group.replaceAll('_', ' ').replace(/^\w/, (letter) => letter.toUpperCase());
   }
 }

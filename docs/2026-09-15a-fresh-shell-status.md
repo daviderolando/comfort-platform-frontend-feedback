@@ -10,6 +10,7 @@ Implemented first workflow:
 - Protect feedback, notifications, and data routes behind login.
 - Load feedback buttons from `GET /api/v1/feedback-options`.
 - Render the canonical local feedback buttons immediately, then update from `GET /api/v1/feedback-options` when available.
+- Group feedback buttons by feedback group; groups with multiple entries render as compact Material accordions.
 - Submit feedback to protected `POST /api/v1/feedback`.
 - Show the Data page with `ng2-charts`/Chart.js bar charts for:
   - `GET /api/v1/feedback/summary/me?days=7`

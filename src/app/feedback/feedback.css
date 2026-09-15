@@ -23,40 +23,74 @@ p {
   color: var(--mat-sys-on-surface-variant);
 }
 
-.button-grid {
+.feedback-groups {
   display: grid;
-  gap: 16px;
+  gap: 12px;
 }
 
-.button-grid button {
-  min-height: 72px;
+.standalone-group,
+.group-button-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.feedback-group-panel {
   border-radius: 8px;
-  font-size: 24px;
+  background: color-mix(in srgb, var(--mat-sys-surface) 96%, var(--mat-sys-primary));
 }
 
-.feedback-success {
+.feedback-group-panel mat-expansion-panel-header {
+  min-height: 56px;
+}
+
+mat-panel-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.feedback-option {
+  min-height: 52px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: normal;
+}
+
+.feedback-option.feedback-success {
   --mdc-protected-button-container-color: #198754;
   --mdc-protected-button-label-text-color: #fff;
+  background-color: #198754;
+  color: #fff;
 }
 
-.feedback-blue {
+.feedback-option.feedback-blue {
   --mdc-protected-button-container-color: #0d6efd;
   --mdc-protected-button-label-text-color: #fff;
+  background-color: #0d6efd;
+  color: #fff;
 }
 
-.feedback-red {
+.feedback-option.feedback-red {
   --mdc-protected-button-container-color: #dc3545;
   --mdc-protected-button-label-text-color: #fff;
+  background-color: #dc3545;
+  color: #fff;
 }
 
-.feedback-gray {
+.feedback-option.feedback-gray,
+.feedback-option.feedback-grey {
   --mdc-protected-button-container-color: #6c757d;
   --mdc-protected-button-label-text-color: #fff;
+  background-color: #6c757d;
+  color: #fff;
 }
 
-.feedback-yellow {
+.feedback-option.feedback-yellow {
   --mdc-protected-button-container-color: #ffc107;
   --mdc-protected-button-label-text-color: #111;
+  background-color: #ffc107;
+  color: #111;
 }
 
 .loading {
@@ -90,13 +124,7 @@ mat-button-toggle {
 }
 
 @media (min-width: 640px) {
-  .button-grid {
+  .group-button-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .button-grid button:first-child,
-  .button-grid button:nth-child(6),
-  .button-grid button:nth-child(7) {
-    grid-column: 1 / -1;
   }
 }
