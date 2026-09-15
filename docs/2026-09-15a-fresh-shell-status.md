@@ -56,6 +56,8 @@ cd /Users/drolando/Documents/Dev/kth/kth-comfort-platform/backend
 
 The development frontend points to `http://127.0.0.1:8000/api/v1` to avoid localhost IPv4/IPv6 ambiguity during browser testing.
 
+The production frontend points to `https://ettlabserverapi.duckdns.org/comfortplatform/api/v1`.
+
 Current placeholders:
 
 - Signup
@@ -65,4 +67,6 @@ If the old Angular app is already running on port `4200`, Angular may offer to r
 Build note:
 
 - Production font optimization is disabled in `angular.json` because Angular otherwise tries to fetch Google Fonts during local builds.
+- The production Angular build replaces `src/environments/environment.ts` with `src/environments/environment.prod.ts`.
 - The production bundle budget was raised to account for Chart.js and the Material tab/menu components.
+- Firebase Hosting serves the compiled Angular app from `dist/frontend-feedback/browser`; the top-level `public/` folder is only an Angular asset source.
